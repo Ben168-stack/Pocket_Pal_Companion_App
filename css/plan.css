@@ -1,0 +1,12 @@
+/* Plan screen */
+/* plan */
+.plan{display:block;width:100%;text-align:left;background:var(--card);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px;border:2px solid transparent}
+.plan[aria-pressed="true"]{border-color:var(--ink)}
+.plan .row{display:flex;justify-content:space-between;align-items:baseline}
+.plan h3{font-size:19px}
+.plan .start{font-weight:700}
+.plan p{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.pending{font-size:12px;font-weight:700;color:var(--defer)}
+.range{display:flex;align-items:center;gap:12px;margin-top:10px}
+.range input{flex:1;accent-color:var(--ink)}
+.range output{font-family:"Baloo 2";font-weight:700;font-size:20px;width:28px;text-align:right}

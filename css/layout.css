@@ -1,0 +1,19 @@
+/* Desktop stage, demo panel, phone frame, status bar, tab bar */
+/* stage */
+.stage{display:flex;gap:28px;justify-content:center;align-items:flex-start;padding:32px 16px;flex-wrap:wrap}
+.phone{width:390px;height:844px;background:var(--mist);border-radius:44px;box-shadow:0 0 0 10px #1F2A44,0 30px 60px rgba(31,42,68,.25);overflow:hidden;position:relative;display:flex;flex-direction:column;flex:none}
+.demo{width:240px;background:var(--card);border-radius:var(--r-md);padding:18px;display:flex;flex-direction:column;gap:10px}
+.demo h2{font-size:20px}
+.demo p{font-size:13px;color:var(--ink-soft)}
+.demo button{background:var(--mist);border-radius:var(--r-sm);padding:10px 12px;text-align:left;font-weight:600;font-size:14px}
+.demo button:hover{background:var(--line)}
+
+/* phone chrome */
+.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-weight:700;font-size:14px;flex:none}
+.screen{flex:1;overflow-y:auto;padding:4px 20px 20px}
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--line);padding:8px 8px 22px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--ink-soft);padding:6px 0;border-radius:var(--r-sm)}
+.tab svg{width:22px;height:22px}
+.tab[aria-current="page"]{color:var(--ink)}
+.tab[aria-current="page"] .dot{background:var(--token)}
+.tab .dot{width:5px;height:5px;border-radius:50%;background:transparent}

@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loadout Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#D7DEEC;
+  --mist:#EEF1F8;
+  --card:#FFFFFF;
+  --ink:#1F2A44;
+  --ink-soft:#5B6680;
+  --line:#DCE1EC;
+  --token:#F2B33D;
+  --token-empty:#D9DEEA;
+  --share:#2A9D8F;
+  --defer:#7B6CF6;
+  --reset:#4FA86E;
+  --alert:#D9596A;
+  --blush:#F6A5B8;
+  --r-lg:28px; --r-md:18px; --r-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--desk);font-family:Figtree,system-ui,sans-serif;color:var(--ink);font-size:15px;line-height:1.45;min-height:100vh}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--defer);outline-offset:2px}
+h1,h2,h3,.display{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.1}
+
+/* stage */
+.stage{display:flex;gap:28px;justify-content:center;align-items:flex-start;padding:32px 16px;flex-wrap:wrap}
+.phone{width:390px;height:844px;background:var(--mist);border-radius:44px;box-shadow:0 0 0 10px #1F2A44,0 30px 60px rgba(31,42,68,.25);overflow:hidden;position:relative;display:flex;flex-direction:column;flex:none}
+.demo{width:240px;background:var(--card);border-radius:var(--r-md);padding:18px;display:flex;flex-direction:column;gap:10px}
+.demo h2{font-size:20px}
+.demo p{font-size:13px;color:var(--ink-soft)}
+.demo button{background:var(--mist);border-radius:var(--r-sm);padding:10px 12px;text-align:left;font-weight:600;font-size:14px}
+.demo button:hover{background:var(--line)}
+
+/* phone chrome */
+.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-weight:700;font-size:14px;flex:none}
+.screen{flex:1;overflow-y:auto;padding:4px 20px 20px}
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--line);padding:8px 8px 22px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--ink-soft);padding:6px 0;border-radius:var(--r-sm)}
+.tab svg{width:22px;height:22px}
+.tab[aria-current="page"]{color:var(--ink)}
+.tab[aria-current="page"] .dot{background:var(--token)}
+.tab .dot{width:5px;height:5px;border-radius:50%;background:transparent}
+
+/* today */
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 2px}
+.dayhead h1{font-size:30px}
+.dayhead .plan-chip{font-size:12px;font-weight:600;background:var(--card);padding:4px 10px;border-radius:99px;color:var(--ink-soft)}
+.hero{position:relative;text-align:center;margin-top:4px}
+.hero svg.mochi{width:210px;height:auto;display:block;margin:0 auto}
+.says{background:var(--card);border-radius:var(--r-md);padding:10px 14px;font-weight:500;display:inline-block;max-width:300px;position:relative;margin-bottom:6px}
+.says::after{content:"";position:absolute;bottom:-7px;left:50%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--card);border-bottom:0}
+.beads{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin:4px 0 2px}
+.bead{width:18px;height:18px;border-radius:50%;background:var(--token);box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.bead.empty{background:var(--token-empty);box-shadow:none}
+.bead.debt{background:transparent;border:2px dashed var(--alert)}
+.count{font-family:"Baloo 2";font-size:22px;font-weight:700}
+.count small{font-family:Figtree;font-size:13px;font-weight:500;color:var(--ink-soft)}
+
+.actions{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;margin:14px 0}
+.btn{border-radius:var(--r-md);padding:14px;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.reset{background:var(--reset);color:#fff}
+.btn.share{background:var(--share);color:#fff}
+.btn.defer{background:var(--defer);color:#fff}
+.btn.ghost{background:var(--card)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+.card{background:var(--card);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px}
+.card h3{font-size:18px;margin-bottom:4px}
+.card p{color:var(--ink-soft);font-size:14px}
+.card.alert{border-left:5px solid var(--alert)}
+.card.nudge{border-left:5px solid var(--reset)}
+.sleep{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.sleep button{background:var(--mist);border-radius:var(--r-sm);padding:10px 4px;font-weight:600;font-size:14px}
+.sleep button span{display:block;font-size:12px;font-weight:500;color:var(--ink-soft)}
+
+.list{list-style:none}
+.list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.list li:last-child{border-bottom:0}
+.delta{font-weight:700;white-space:nowrap}
+.delta.minus{color:var(--ink)}
+.delta.plus{color:var(--reset)}
+.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;color:#fff}
+.tag.share{background:var(--share)}.tag.defer{background:var(--defer)}.tag.reset{background:var(--reset)}.tag.self{background:var(--ink-soft)}.tag.sleep{background:#8C96B0}
+.section-title{font-family:"Baloo 2";font-size:19px;font-weight:700;margin:16px 0 8px}
+.empty-note{color:var(--ink-soft);font-size:14px}
+
+/* sheet */
+.scrim{position:absolute;inset:0;background:rgba(31,42,68,.35);display:flex;align-items:flex-end;z-index:5}
+.sheet{background:var(--mist);width:100%;max-height:88%;overflow-y:auto;border-radius:var(--r-lg) var(--r-lg) 0 0;padding:10px 20px 28px;animation:up .22s ease-out}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+@keyframes up{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}
+.grab{width:40px;height:5px;background:var(--line);border-radius:3px;margin:0 auto 12px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sheet-head h2{font-size:24px}
+.close{width:34px;height:34px;border-radius:50%;background:var(--card);font-size:18px;font-weight:700}
+.pick{display:flex;justify-content:space-between;align-items:center;width:100%;background:var(--card);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;text-align:left;border:2px solid transparent}
+.pick[aria-pressed="true"]{border-color:var(--ink)}
+.pick .sub{display:block;font-size:12px;color:var(--ink-soft);font-weight:500}
+.cost{font-family:"Baloo 2";font-weight:700;font-size:18px;white-space:nowrap}
+.factors{display:flex;flex-direction:column;gap:8px;margin:8px 0 12px}
+.toggle{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:var(--r-sm);padding:10px 14px;text-align:left;font-size:14px}
+.toggle .sw{width:42px;height:24px;border-radius:99px;background:var(--token-empty);position:relative;flex:none;transition:background .15s}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
+.toggle[aria-pressed="true"] .sw{background:var(--ink)}
+.toggle[aria-pressed="true"] .sw::after{left:21px}
+input[type=text],textarea{width:100%;border:2px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;font:inherit;background:var(--card);color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+.choice{display:grid;gap:8px;margin-top:6px}
+.choice .btn{justify-content:space-between;font-size:15px}
+.choice .btn small{font-weight:500;opacity:.85;font-size:13px}
+.hint{font-size:13px;color:var(--ink-soft);margin:6px 0 10px}
+.familiar{font-size:12px;font-weight:700;color:var(--reset)}
+
+/* plan */
+.plan{display:block;width:100%;text-align:left;background:var(--card);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px;border:2px solid transparent}
+.plan[aria-pressed="true"]{border-color:var(--ink)}
+.plan .row{display:flex;justify-content:space-between;align-items:baseline}
+.plan h3{font-size:19px}
+.plan .start{font-weight:700}
+.plan p{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.pending{font-size:12px;font-weight:700;color:var(--defer)}
+.range{display:flex;align-items:center;gap:12px;margin-top:10px}
+.range input{flex:1;accent-color:var(--ink)}
+.range output{font-family:"Baloo 2";font-weight:700;font-size:20px;width:28px;text-align:right}
+
+/* week */
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:130px;margin:6px 0 4px}
+.bar{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:2px}
+.bar .fill{width:100%;border-radius:6px 6px 3px 3px;background:var(--token)}
+.bar .fill.over{background:var(--alert)}
+.bar .fill.none{background:var(--token-empty);height:4px}
+.bar .rec{width:100%;border-radius:3px;background:var(--reset)}
+.barlabels{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;font-weight:600;color:var(--ink-soft)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink-soft);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stat{background:var(--card);border-radius:var(--r-md);padding:12px;text-align:center}
+.stat b{font-family:"Baloo 2";font-size:26px;display:block;line-height:1}
+.stat span{font-size:12px;color:var(--ink-soft)}
+.growth{display:flex;align-items:center;gap:12px}
+.growth svg{width:84px;flex:none}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.presets button{background:var(--card);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:600;border:1px solid var(--line)}
+
+/* people */
+.person{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:var(--r-md);padding:12px 14px;margin-bottom:8px}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--share);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.person b{display:block}
+.person span{font-size:13px;color:var(--ink-soft)}
+.msg{background:var(--card);border-radius:var(--r-md);padding:12px 14px;font-size:14px;margin:8px 0}
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:99px;font-weight:600;font-size:14px;z-index:9;white-space:nowrap}
+
+/* gallery */
+#gallery{display:flex;flex-wrap:wrap;gap:40px;padding:40px;justify-content:center}
+#gallery .frame{display:flex;flex-direction:column;gap:10px;align-items:center}
+#gallery .frame-label{font-weight:700;font-size:14px}
+#gallery .phone{box-shadow:none;border-radius:0}
+#gallery .phone .sheet{animation:none}
+body.gallery .stage{display:none}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone" id="phone" aria-live="polite"></div>
+  <aside class="demo" aria-label="Demo controls">
+    <h2>Demo controls</h2>
+    <p>These sit outside the phone so you can run the prototype during your presentation.</p>
+    <button data-act="nextDay">Skip to next day</button>
+    <button data-act="sampleWeek">Load Jane's sample week</button>
+    <button data-act="drain">Make today a heavy day</button>
+    <button data-act="restart">Start over</button>
+    <button data-act="gallery">Show all screens (for Figma)</button>
+  </aside>
+</div>
+<div id="gallery" hidden></div>
+
+<script>
+const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const PLANS={
+  steady:{name:"Steady",start:10,note:"Standard costs and recovery. For normal weeks."},
+  crunch:{name:"Crunch week",start:12,note:"Two extra tokens, but one Reset a day is required. Ends after 7 days."},
+  free:{name:"Free & easy",start:10,note:"Every Reset gives 1 extra token. For recess and light weeks."},
+  custom:{name:"Custom",start:10,note:"Choose your own daily tokens between 8 and 14."}
+};
+const TASKS=[
+  {id:"admin",name:"Unfamiliar admin",ex:"Bank, visa or hall office",time:0,unfamiliar:1,strain:1},
+  {id:"deadline",name:"Academic deadline",ex:"Assignment or quiz",time:1,unfamiliar:0,strain:1},
+  {id:"lab",name:"First lab report",ex:"A new kind of assignment",time:1,unfamiliar:1,strain:1},
+  {id:"health",name:"Healthcare visit",ex:"Seeing a doctor on campus",time:0,unfamiliar:1,strain:1},
+  {id:"social",name:"Difficult conversation",ex:"Group conflict, awkward talk",time:0,unfamiliar:0,strain:1},
+  {id:"errand",name:"Routine errand",ex:"Laundry, groceries",time:0,unfamiliar:0,strain:0}
+];
+const RESETS=[
+  {id:"move",name:"Walk, swim or gym",ex:"20 minutes counts",gain:1},
+  {id:"friend",name:"Meal or chat with a friend",ex:"In person or a call home",gain:1},
+  {id:"hobby",name:"Something you enjoy",ex:"15 minutes, no studying",gain:1},
+  {id:"off",name:"Proper break",ex:"Half a day with nothing logged",gain:3}
+];
+const DAILY_CAP=4;
+
+let S;
+function fresh(){
+  return {plan:"steady",pendingPlan:null,customStart:10,pendingCustom:null,raises:0,
+    startTokens:10,tokens:10,day:0,week:1,slept:null,recovered:0,
+    log:[],later:[],days:[],seen:{},growth:0,sharesTotal:0,
+    people:[{name:"Hall friend",role:"Lives two floors down"},{name:"Course mate",role:"Same EEE lab group"},{name:"Senior",role:"Year 2, been through it"},{name:"Student support",role:"NTU counselling and wellbeing"}],
+    view:"today",sheet:null,draft:null,shareFor:null,ifThen:"",toast:null};
+}
+function load(){try{const v=localStorage.getItem("loadout");if(v)return Object.assign(fresh(),JSON.parse(v))}catch(e){}return fresh()}
+function save(){try{localStorage.setItem("loadout",JSON.stringify({...S,toast:null}))}catch(e){}}
+S=load();
+
+/* ---------- logic ---------- */
+function taskCost(t){
+  const familiar=t.unfamiliar&&(S.seen[t.id]||0)>0;
+  return {cost:1+t.time+(familiar?0:t.unfamiliar)+t.strain,familiar};
+}
+function energy(st=S){
+  if(st.tokens<=0)return"asleep";
+  const r=st.tokens/st.startTokens;
+  return r>.6?"bright":r>.3?"okay":"tired";
+}
+function sharesThisWeek(){return S.days.reduce((a,d)=>a+d.shared,0)+S.log.filter(l=>l.kind==="share").length}
+function goodNights(){return S.days.filter(d=>d.slept==="good").length+(S.slept==="good"?1:0)}
+function resetsToday(){return S.log.filter(l=>l.kind==="reset").length}
+
+function spend(name,kind,delta,extra={}){
+  S.tokens+=delta;
+  S.log.unshift({name,kind,delta,...extra});
+}
+function closeDay(){
+  const spent=S.log.filter(l=>l.delta<0).reduce((a,l)=>a-l.delta,0);
+  S.days.push({spent,recovered:S.recovered,shared:S.log.filter(l=>l.kind==="share").length,over:S.tokens<0,slept:S.slept,resets:resetsToday()});
+}
+function nextDay(){
+  closeDay();
+  S.day++;
+  S.tokens=S.startTokens;S.slept=null;S.recovered=0;S.log=[];S.view="today";S.sheet=null;
+}
+function startWeek(){
+  const over=S.days.filter(d=>d.over).length;
+  const shared=S.days.reduce((a,d)=>a+d.shared,0);
+  if(over===0||shared>0)S.growth++;
+  if(S.pendingPlan){S.plan=S.pendingPlan;S.pendingPlan=null}
+  if(S.pendingCustom!=null){if(S.pendingCustom>S.customStart)S.raises++;else S.raises=0;S.customStart=S.pendingCustom;S.pendingCustom=null}
+  S.startTokens=S.plan==="custom"?S.customStart:PLANS[S.plan].start;
+  S.week++;S.day=0;S.days=[];S.tokens=S.startTokens;S.slept=null;S.recovered=0;S.log=[];S.view="today";S.sheet=null;
+  if(S.plan==="crunch"){S.pendingPlan="steady"}
+  toast("New week. Mochi is ready.");
+}
+
+/* ---------- Mochi ---------- */
+function mochi(state,{growth=0,scarf=false}={}){
+  const ry={bright:62,okay:58,tired:52,asleep:48}[state];
+  const cy=118+(62-ry);
+  const tint={bright:"#FFFFFF",okay:"#FBFBFD",tired:"#F1F2F7",asleep:"#E9EBF3"}[state];
+  let eyes="",mouth="",extra="";
+  if(state==="bright"){
+    eyes=`<circle cx="76" cy="${cy-8}" r="7" fill="#1F2A44"/><circle cx="124" cy="${cy-8}" r="7" fill="#1F2A44"/><circle cx="78.5" cy="${cy-10.5}" r="2.4" fill="#fff"/><circle cx="126.5" cy="${cy-10.5}" r="2.4" fill="#fff"/>`;
+    mouth=`<path d="M90 ${cy+6} q10 11 20 0" stroke="#1F2A44" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    extra=`<path d="M36 ${cy-52} l4 9 9 4 -9 4 -4 9 -4-9 -9-4 9-4z" fill="#F2B33D"/><path d="M166 ${cy-44} l3 6 6 3 -6 3 -3 6 -3-6 -6-3 6-3z" fill="#F2B33D"/>`;
+  }else if(state==="okay"){
+    eyes=`<circle cx="76" cy="${cy-6}" r="6" fill="#1F2A44"/><circle cx="124" cy="${cy-6}" r="6" fill="#1F2A44"/>`;
+    mouth=`<path d="M93 ${cy+7} q7 6 14 0" stroke="#1F2A44" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+  }else if(state==="tired"){
+    eyes=`<path d="M68 ${cy-6} q8 6 16 0" stroke="#1F2A44" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M116 ${cy-6} q8 6 16 0" stroke="#1F2A44" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    mouth=`<path d="M93 ${cy+9} h14" stroke="#1F2A44" stroke-width="3.5" stroke-linecap="round"/>`;
+    extra=`<path d="M154 ${cy-34} q6 10 0 14 q-6 -4 0 -14z" fill="#9CC9F0"/>`;
+  }else{
+    eyes=`<path d="M68 ${cy-4} q8 -6 16 0" stroke="#1F2A44" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M116 ${cy-4} q8 -6 16 0" stroke="#1F2A44" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    mouth=`<ellipse cx="100" cy="${cy+10}" rx="4" ry="3" fill="#1F2A44"/>`;
+    extra=`<text x="146" y="${cy-40}" font-family="Baloo 2" font-weight="800" font-size="22" fill="#7B6CF6">z</text><text x="160" y="${cy-56}" font-family="Baloo 2" font-weight="800" font-size="16" fill="#7B6CF6">z</text>`;
+  }
+  const top=cy-ry;
+  let sprout="";
+  if(growth>=1)sprout+=`<path d="M100 ${top+2} v-16" stroke="#4FA86E" stroke-width="4" stroke-linecap="round"/><path d="M100 ${top-10} q-16 -10 -22 2 q12 8 22 -2z" fill="#4FA86E"/>`;
+  if(growth>=2)sprout+=`<path d="M100 ${top-12} q16 -12 24 0 q-12 10 -24 0z" fill="#5DB37E"/>`;
+  if(growth>=3)sprout+=`<circle cx="100" cy="${top-20}" r="7" fill="#F6A5B8"/><circle cx="100" cy="${top-20}" r="3" fill="#F2B33D"/>`;
+  const sc=scarf?`<path d="M38 ${cy+30} q62 26 124 0 v12 q-62 26 -124 0z" fill="#2A9D8F"/><rect x="128" y="${cy+40}" width="14" height="24" rx="4" fill="#2A9D8F" transform="rotate(-8 135 ${cy+52})"/>`:"";
+  return `<svg class="mochi" viewBox="0 0 200 190" role="img" aria-label="Mochi looks ${state==="bright"?"energetic":state}">
+    <ellipse cx="100" cy="178" rx="70" ry="8" fill="#1F2A44" opacity=".08"/>
+    ${sprout}
+    <ellipse cx="100" cy="${cy}" rx="82" ry="${ry}" fill="${tint}" stroke="#1F2A44" stroke-width="3"/>
+    <ellipse cx="62" cy="${cy+8}" rx="11" ry="7" fill="#F6A5B8" opacity=".75"/><ellipse cx="138" cy="${cy+8}" rx="11" ry="7" fill="#F6A5B8" opacity=".75"/>
+    ${eyes}${mouth}${sc}${extra}
+  </svg>`;
+}
+const SAYS={
+  bright:"Plenty in the tank today.",
+  okay:"We're doing fine. Pace it.",
+  tired:"I'm getting tired. Share or Reset before the next big task?",
+  asleep:"I've run out. That's your cue to rest too."
+};
+
+/* ---------- screens ---------- */
+const icons={
+  today:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M9 13h.01M15 13h.01M10 16q2 1.5 4 0"/></svg>',
+  week:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg>',
+  plan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>',
+  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .8 3 3 3 6"/></svg>'
+};
+function tabbar(v){
+  const t=[["today","Today"],["week","Week"],["plan","Plan"],["people","People"]];
+  return `<nav class="tabbar">${t.map(([k,l])=>`<button class="tab" data-act="view" data-v="${k}" ${v===k?'aria-current="page"':""}>${icons[k]}${l}<span class="dot"></span></button>`).join("")}</nav>`;
+}
+function beads(st=S){
+  const total=Math.max(st.startTokens,st.tokens);
+  let h="";
+  for(let i=0;i<total;i++)h+=`<span class="bead ${i<st.tokens?"":"empty"}"></span>`;
+  for(let i=0;i<-st.tokens;i++)h+=`<span class="bead debt"></span>`;
+  return h;
+}
+function screenToday(){
+  const e=energy();
+  const planName=S.plan==="custom"?"Custom":PLANS[S.plan].name;
+  let cards="";
+  if(S.slept===null){
+    cards+=`<div class="card"><h3>How did you sleep?</h3><p>This sets how many tokens you start with today.</p>
+      <div class="sleep"><button data-act="sleep" data-q="poor">Under 6h<span>−2 tokens</span></button><button data-act="sleep" data-q="ok">6 to 7h<span>no change</span></button><button data-act="sleep" data-q="good">7h or more<span>+2 tokens</span></button></div></div>`;
+  }
+  if(S.tokens<0){
+    cards+=`<div class="card alert"><h3>Over budget by ${-S.tokens}</h3><p>One tough day doesn't undo the week. So far you've shared ${sharesThisWeek()} task${sharesThisWeek()===1?"":"s"} and had ${goodNights()} good night${goodNights()===1?"":"s"} of sleep. Tomorrow starts fresh.</p></div>`;
+  }else if(S.tokens>0&&S.tokens<=3){
+    cards+=`<div class="card nudge"><h3>Running low</h3><p>A 20-minute walk before the next task would give a token back.</p></div>`;
+  }
+  if(S.plan==="crunch"&&resetsToday()===0){
+    cards+=`<div class="card nudge"><h3>Crunch week rule</h3><p>Log one Reset today to keep the two extra tokens fair.</p></div>`;
+  }
+  const later=S.later.length?`<div class="section-title">Deferred</div><div class="card"><ul class="list">${S.later.map((l,i)=>`<li><span>${l.name}</span><button class="tag defer" data-act="undefer" data-i="${i}">Do now</button></li>`).join("")}</ul></div>`:"";
+  const log=S.log.length?`<ul class="list">${S.log.map(l=>`<li><span><span class="tag ${l.kind}">${{self:"Did it",share:"Shared",defer:"Deferred",reset:"Reset",sleep:"Sleep"}[l.kind]}</span> ${l.name}</span><span class="delta ${l.delta>0?"plus":"minus"}">${l.delta>0?"+":""}${l.delta||"0"}</span></li>`).join("")}</ul>`:`<p class="empty-note">Nothing logged yet. Add the first thing on your plate.</p>`;
+  return `<div class="screen">
+    <div class="dayhead"><h1>${DAYS[S.day]}</h1><span class="plan-chip">Week ${S.week}, ${planName}</span></div>
+    <div class="hero"><div class="says">${SAYS[e]}</div>${mochi(e,{growth:S.growth,scarf:S.sharesTotal>0})}
+      <div class="beads" aria-hidden="true">${beads()}</div>
+      <div class="count">${S.tokens} <small>of ${S.startTokens} tokens left today</small></div></div>
+    <div class="actions"><button class="btn primary" data-act="sheet" data-s="log">Log a task</button><button class="btn reset" data-act="sheet" data-s="reset">Reset</button></div>
+    ${cards}${later}
+    <div class="section-title">Today</div><div class="card">${log}</div>
+  </div>`;
+}
+function sheetLog(){
+  const d=S.draft;
+  let body;
+  if(!d){
+    body=`<p class="hint">Each task starts at 1 token. Taking long, being new to you, or being stressful each add 1.</p>
+      ${TASKS.map(t=>{const c=taskCost(t);return `<button class="pick" data-act="pickTask" data-id="${t.id}"><span>${t.name}<span class="sub">${t.ex}</span>${c.familiar?'<span class="familiar">Familiar now, 1 cheaper</span>':""}</span><span class="cost">−${c.cost}</span></button>`}).join("")}
+      <button class="pick" data-act="pickTask" data-id="custom"><span>Something else<span class="sub">Name it and rate it yourself</span></span><span class="cost">+</span></button>`;
+  }else{
+    const t=d;
+    const c=d.custom?{cost:1+d.time+d.unfamiliar+d.strain,familiar:false}:taskCost(d);
+    const tog=(k,label,sub)=>`<button class="toggle" data-act="tog" data-k="${k}" aria-pressed="${!!d[k]}"><span>${label}<span class="sub" style="display:block;font-size:12px;color:var(--ink-soft)">${sub}</span></span><span class="sw"></span></button>`;
+    body=`${d.custom?`<label class="hint" for="tname">Task name</label><input id="tname" type="text" data-act="tname" value="${d.name||""}" placeholder="e.g. Phone call with landlord">`:`<div class="card"><h3>${t.name}</h3><p>${t.ex}</p></div>`}
+      <div class="factors">${tog("time","Takes over 2 hours","Or spreads over several days")}${tog("unfamiliar","New to me","First time, or an unfamiliar system")}${tog("strain","Stressful","Uncertainty, pressure or conflict")}</div>
+      ${c.familiar?'<p class="familiar">You have done this before, so it costs 1 less.</p>':""}
+      <div class="choice">
+        <button class="btn primary" data-act="doTask" data-how="self">Do it myself<small>−${c.cost} tokens</small></button>
+        <button class="btn share" data-act="doTask" data-how="share">Share it<small>−1 token</small></button>
+        <button class="btn defer" data-act="doTask" data-how="defer">Defer it<small>0 today</small></button>
+      </div>
+      <button class="btn ghost" style="width:100%;margin-top:8px" data-act="draftBack">Pick a different task</button>`;
+  }
+  return sheet("Log a task",body);
+}
+function sheetShare(){
+  const t=S.shareFor||{name:"this task"};
+  return sheet("Share it",`<p class="hint">Asking for help costs 1 token instead of ${t.fullCost||3}. Pick someone, then send the message.</p>
+    ${S.people.map((p,i)=>`<button class="pick" data-act="sharePick" data-i="${i}" aria-pressed="${S.shareTo===i}"><span>${p.name}<span class="sub">${p.role}</span></span></button>`).join("")}
+    <div class="msg">Hey, I'm stuck on <b>${t.name.toLowerCase()}</b>. Could you help me with it, or tell me how you handled it? Even 10 minutes would help a lot.</div>
+    <button class="btn share" style="width:100%" data-act="shareSend" ${S.shareTo==null?"disabled":""}>Copy message and log share</button>`);
+}
+function sheetReset(){
+  const left=DAILY_CAP-S.recovered;
+  const bonus=S.plan==="free"?1:0;
+  return sheet("Reset",`<p class="hint">Recovery earns tokens back. You can gain up to ${DAILY_CAP} a day, and ${Math.max(left,0)} are left today.${bonus?" Free & easy adds 1 to each.":""}</p>
+    ${RESETS.map(r=>{const g=Math.min(r.gain+bonus,Math.max(left,0));return `<button class="pick" data-act="doReset" data-id="${r.id}" ${left<=0?"disabled":""}><span>${r.name}<span class="sub">${r.ex}</span></span><span class="cost" style="color:var(--reset)">+${g}</span></button>`}).join("")}`);
+}
+function sheet(title,body){
+  return `<div class="scrim" data-act="closeScrim"><div class="sheet" role="dialog" aria-label="${title}"><div class="grab"></div><div class="sheet-head"><h2>${title}</h2><button class="close" data-act="close" aria-label="Close">×</button></div>${body}</div></div>`;
+}
+function screenWeek(){
+  const days=[...S.days];
+  const today={spent:S.log.filter(l=>l.delta<0).reduce((a,l)=>a-l.delta,0),recovered:S.recovered,over:S.tokens<0,shared:S.log.filter(l=>l.kind==="share").length};
+  const all=DAYS.map((_,i)=>i<days.length?days[i]:i===S.day?today:null);
+  const max=Math.max(14,...all.filter(Boolean).map(d=>d.spent));
+  const bars=all.map(d=>{
+    if(!d)return `<div class="bar"><div class="fill none"></div></div>`;
+    return `<div class="bar"><div class="fill ${d.over?"over":""}" style="height:${Math.max(4,d.spent/max*100)}%"></div><div class="rec" style="height:${d.recovered/max*100}%"></div></div>`;
+  }).join("");
+  const done=all.filter(Boolean);
+  const shared=done.reduce((a,d)=>a+d.shared,0);
+  const overs=done.filter(d=>d.over).length;
+  const resets=days.reduce((a,d)=>a+(d.resets||0),0)+resetsToday();
+  const balanced=overs===0||shared>0;
+  const sunday=S.day===6;
+  const presets=["If I have two deadlines, I'll share the admin","If I sleep under 6 hours, I'll skip optional tasks","If it's exam week, I'll still do two 20-minute runs"];
+  return `<div class="screen">
+    <div class="dayhead"><h1>Week ${S.week}</h1><span class="plan-chip">${sunday?"Sunday review":"So far"}</span></div>
+    <div class="card"><h3>Tokens spent each day</h3><div class="bars">${bars}</div>
+      <div class="barlabels">${DAYS.map(d=>`<span>${d[0]}</span>`).join("")}</div>
+      <div class="legend"><span><i style="background:var(--token)"></i>Spent</span><span><i style="background:var(--reset)"></i>Recovered</span><span><i style="background:var(--alert)"></i>Over budget</span></div></div>
+    <div class="stats"><div class="stat"><b>${shared}</b><span>Shared</span></div><div class="stat"><b>${resets}</b><span>Resets</span></div><div class="stat"><b>${overs}</b><span>Over budget</span></div></div>
+    <div class="card growth">${mochi("bright",{growth:S.growth+(balanced?1:0),scarf:S.sharesTotal>0})}<div><h3>${balanced?"Mochi will grow this week":"Mochi stays the same size"}</h3><p>${balanced?"You stayed in budget or asked for help. Both count.":"Share one task or stay in budget to help Mochi grow."}</p></div></div>
+    <div class="section-title">Plan for next week</div>
+    <div class="card"><p>Write one if-then plan for a week that might get busy.</p>
+      <div class="presets">${presets.map(p=>`<button data-act="ifthen" data-t="${p}">${p}</button>`).join("")}</div>
+      <textarea data-act="ifthenText" aria-label="Your if-then plan" placeholder="If ..., I will ...">${S.ifThen}</textarea></div>
+    <button class="btn primary" style="width:100%" data-act="startWeek" ${sunday?"":"disabled"}>${sunday?"Start next week":"Available on Sunday"}</button>
+  </div>`;
+}
+function screenPlan(){
+  const cur=S.pendingPlan||S.plan;
+  const flag=S.raises>=2?`<div class="card nudge"><h3>You've raised your budget a few weeks running</h3><p>Want to look at what's been draining you? The Week tab shows which days went over.</p></div>`:"";
+  return `<div class="screen">
+    <div class="dayhead"><h1>Your plan</h1></div>
+    <p class="hint">Changes start next week, so you decide when you're calm, not in the middle of a hard day.</p>
+    ${flag}
+    ${Object.entries(PLANS).map(([k,p])=>{
+      const start=k==="custom"?(S.pendingCustom??S.customStart):p.start;
+      return `<button class="plan" data-act="plan" data-k="${k}" aria-pressed="${cur===k}"><div class="row"><h3>${p.name}</h3><span class="start">${start} tokens a day</span></div><p>${p.note}</p>${S.pendingPlan===k?'<span class="pending">Starts next week</span>':S.plan===k?'<span class="pending" style="color:var(--reset)">Current plan</span>':""}</button>`}).join("")}
+    ${cur==="custom"?`<div class="card"><h3>Daily tokens</h3><div class="range"><input type="range" min="8" max="14" value="${S.pendingCustom??S.customStart}" data-act="custom" aria-label="Daily tokens"><output>${S.pendingCustom??S.customStart}</output></div><p style="margin-top:6px">Limited to 8 to 14 so the budget still means something.</p></div>`:""}
+    <div class="section-title">Task costs</div>
+    <div class="card"><ul class="list">${TASKS.map(t=>`<li><span>${t.name}</span><span class="delta">−${taskCost(t).cost}</span></li>`).join("")}</ul><p style="margin-top:6px">Costs stay between 1 and 5 tokens.</p></div>
+  </div>`;
+}
+function screenPeople(){
+  return `<div class="screen">
+    <div class="dayhead"><h1>Your people</h1></div>
+    <p class="hint">The people you can share tasks with. Set them up now, so asking for help later is one tap.</p>
+    ${S.people.map(p=>`<div class="person"><div class="avatar">${p.name[0]}</div><div><b>${p.name}</b><span>${p.role}</span></div></div>`).join("")}
+    <div class="card"><h3>Add someone</h3><input type="text" data-act="newPerson" placeholder="Name, e.g. Lab partner" aria-label="New person's name"><button class="btn share" style="width:100%;margin-top:8px" data-act="addPerson">Add person</button></div>
+    <div class="section-title">Message templates</div>
+    <div class="msg">Hey, I'm stuck on [task]. Could you help me with it, or tell me how you handled it?</div>
+    <div class="msg">I've got a lot on this week. Could we move [task] to next week?</div>
+  </div>`;
+}
+function phoneHTML(){
+  const views={today:screenToday,week:screenWeek,plan:screenPlan,people:screenPeople};
+  const sh={log:sheetLog,reset:sheetReset,share:sheetShare}[S.sheet];
+  return `<div class="statusbar"><span>9:41</span><span class="display" style="font-size:16px">Loadout</span><span>100%</span></div>${views[S.view]()}${tabbar(S.view)}${sh?sh():""}${S.toast?`<div class="toast" role="status">${S.toast}</div>`:""}`;
+}
+
+/* ---------- actions ---------- */
+let toastTimer;
+function toast(m){S.toast=m;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{S.toast=null;render()},1800)}
+const phone=document.getElementById("phone");
+function render(){phone.innerHTML=phoneHTML();save()}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b||b.closest("#gallery"))return;
+  const a=b.dataset.act;
+  if(a==="closeScrim"&&e.target!==b)return;
+  switch(a){
+    case"view":S.view=b.dataset.v;S.sheet=null;break;
+    case"sheet":S.sheet=b.dataset.s;S.draft=null;break;
+    case"close":case"closeScrim":S.sheet=null;S.draft=null;break;
+    case"sleep":{const q=b.dataset.q,d={poor:-2,ok:0,good:2}[q];S.slept=q;S.tokens+=d;spend(q==="good"?"Slept 7h or more":q==="poor"?"Slept under 6h":"Slept 6 to 7h","sleep",0);S.log[0].delta=d;break}
+    case"pickTask":{const id=b.dataset.id;S.draft=id==="custom"?{custom:true,id:"c"+Date.now(),name:"",time:0,unfamiliar:0,strain:0}:{...TASKS.find(t=>t.id===id)};break}
+    case"draftBack":S.draft=null;break;
+    case"tog":{const k=b.dataset.k;S.draft[k]=S.draft[k]?0:1;break}
+    case"doTask":{
+      const d=S.draft;const name=(d.custom?(d.name||"Custom task"):d.name);
+      const c=d.custom?{cost:1+d.time+d.unfamiliar+d.strain}:taskCost(d);
+      const how=b.dataset.how;
+      if(how==="self"){spend(name,"self",-c.cost);S.seen[d.id]=(S.seen[d.id]||0)+1;S.sheet=null;toast(`−${c.cost} tokens`)}
+      if(how==="defer"){S.later.push({...d,name});spend(name,"defer",0);S.sheet=null;toast("Moved to Deferred")}
+      if(how==="share"){S.shareFor={...d,name,fullCost:c.cost};S.shareTo=null;S.sheet="share"}
+      S.draft=null;break}
+    case"sharePick":S.shareTo=+b.dataset.i;break;
+    case"shareSend":{
+      const t=S.shareFor;const p=S.people[S.shareTo];
+      const msg=`Hey, I'm stuck on ${t.name.toLowerCase()}. Could you help me with it, or tell me how you handled it? Even 10 minutes would help a lot.`;
+      try{navigator.clipboard&&navigator.clipboard.writeText(msg).catch(()=>{})}catch(err){}
+      spend(`${t.name} with ${p.name}`,"share",-1);S.seen[t.id]=(S.seen[t.id]||0)+1;S.sharesTotal++;S.sheet=null;S.shareFor=null;toast("Message copied. Shared for 1 token");break}
+    case"doReset":{
+      const r=RESETS.find(x=>x.id===b.dataset.id);const bonus=S.plan==="free"?1:0;
+      const g=Math.min(r.gain+bonus,DAILY_CAP-S.recovered);if(g<=0)break;
+      S.recovered+=g;spend(r.name,"reset",g);S.sheet=null;toast(`+${g}. Mochi feels better`);break}
+    case"undefer":{const t=S.later.splice(+b.dataset.i,1)[0];S.draft=t;S.sheet="log";break}
+    case"plan":{const k=b.dataset.k;S.pendingPlan=k===S.plan&&k!=="custom"?null:k;if(k===S.plan&&k==="custom")S.pendingPlan=null;break}
+    case"ifthen":S.ifThen=b.dataset.t;break;
+    case"startWeek":startWeek();break;
+    case"addPerson":{const i=phone.querySelector('[data-act="newPerson"]');if(i&&i.value.trim()){S.people.push({name:i.value.trim(),role:"Added by you"});toast("Added")}break}
+    case"nextDay":if(S.day===6){S.view="week";toast("It's Sunday. Review the week.")}else{nextDay();toast(`Good morning. It's ${DAYS[S.day]}.`)}break;
+    case"sampleWeek":sampleWeek();break;
+    case"drain":if(S.slept===null){S.slept="poor";S.log.unshift({name:"Slept under 6h",kind:"sleep",delta:-2});S.tokens-=2}spend("First lab report","self",-4);spend("Unfamiliar admin","self",-3);spend("Academic deadline","self",-3);toast("Heavy day loaded");break;
+    case"restart":S=fresh();break;
+    case"gallery":showGallery();return;
+    default:return;
+  }
+  render();
+});
+document.addEventListener("input",e=>{
+  const a=e.target.dataset.act;
+  if(a==="tname"){S.draft.name=e.target.value;save()}
+  if(a==="ifthenText"){S.ifThen=e.target.value;save()}
+  if(a==="custom"){const v=+e.target.value;S.pendingCustom=v===S.customStart?null:v;e.target.nextElementSibling.textContent=v;save()}
+});
+document.addEventListener("change",e=>{if(e.target.dataset.act==="custom")render()});
+
+function sampleWeek(){
+  S=fresh();S.growth=1;S.sharesTotal=2;S.seen={admin:1};
+  S.days=[
+    {spent:7,recovered:2,shared:0,over:false,slept:"good",resets:1},
+    {spent:12,recovered:1,shared:0,over:true,slept:"poor",resets:1},
+    {spent:6,recovered:3,shared:1,over:false,slept:"ok",resets:2},
+    {spent:8,recovered:2,shared:1,over:false,slept:"good",resets:1},
+    {spent:5,recovered:4,shared:0,over:false,slept:"good",resets:2},
+    {spent:2,recovered:3,shared:0,over:false,slept:"good",resets:1}
+  ];
+  S.day=6;S.slept="good";S.tokens=11;S.recovered=1;
+  S.log=[{name:"Meal or chat with a friend",kind:"reset",delta:1},{name:"Slept 7h or more",kind:"sleep",delta:2}];
+  S.view="week";S.ifThen="If I have two deadlines, I'll share the admin";
+  toast("Sample week loaded");
+}
+
+/* ---------- gallery for Figma ---------- */
+function showGallery(){
+  const keep=JSON.parse(JSON.stringify(S));
+  const frames=[
+    ["1 Today, morning",()=>{S=fresh()}],
+    ["2 Today, energetic",()=>{S=fresh();S.slept="good";S.tokens=11;S.startTokens=10;S.log=[{name:"Routine errand",kind:"self",delta:-1},{name:"Slept 7h or more",kind:"sleep",delta:2}]}],
+    ["3 Today, tired",()=>{S=fresh();S.slept="ok";S.tokens=3;S.sharesTotal=1;S.log=[{name:"Academic deadline",kind:"self",delta:-3},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Routine errand",kind:"self",delta:-1}]}],
+    ["4 Today, over budget",()=>{S=fresh();S.slept="poor";S.tokens=-2;S.days=[{spent:6,recovered:2,shared:1,over:false,slept:"good",resets:1}];S.day=1;S.log=[{name:"First lab report",kind:"self",delta:-4},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Academic deadline",kind:"self",delta:-3},{name:"Slept under 6h",kind:"sleep",delta:-2}]}],
+    ["5 Log a task",()=>{S=fresh();S.slept="ok";S.seen={admin:1};S.sheet="log"}],
+    ["6 Rate a task",()=>{S=fresh();S.slept="ok";S.sheet="log";S.draft={...TASKS[2]}}],
+    ["7 Share it",()=>{S=fresh();S.slept="ok";S.sheet="share";S.shareFor={...TASKS[0],fullCost:3};S.shareTo=0}],
+    ["8 Reset",()=>{S=fresh();S.slept="ok";S.tokens=4;S.sheet="reset"}],
+    ["9 Week review",()=>{sampleWeek();S.toast=null}],
+    ["10 Plan",()=>{S=fresh();S.pendingPlan="crunch";S.view="plan"}],
+    ["11 People",()=>{S=fresh();S.view="people"}]
+  ];
+  const g=document.getElementById("gallery");
+  g.innerHTML=`<div style="width:100%;text-align:center"><button class="btn primary" style="display:inline-flex" data-act="exitGallery">Back to prototype</button></div>`+
+    frames.map(([label,setup])=>{setup();S.toast=null;return `<div class="frame"><div class="frame-label">${label}</div><div class="phone">${phoneHTML()}</div></div>`}).join("");
+  S=keep;S.toast=null;
+  document.body.classList.add("gallery");g.hidden=false;window.scrollTo(0,0);
+}
+document.addEventListener("click",e=>{
+  if(e.target.closest('[data-act="exitGallery"]')){document.body.classList.remove("gallery");document.getElementById("gallery").hidden=true;render()}
+},true);
+
+render();
+</script>
+</body>
+</html>

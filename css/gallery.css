@@ -1,0 +1,8 @@
+/* 'Show all screens' gallery view */
+/* gallery */
+#gallery{display:flex;flex-wrap:wrap;gap:40px;padding:40px;justify-content:center}
+#gallery .frame{display:flex;flex-direction:column;gap:10px;align-items:center}
+#gallery .frame-label{font-weight:700;font-size:14px}
+#gallery .phone{box-shadow:none;border-radius:0}
+#gallery .phone .sheet{animation:none}
+body.gallery .stage{display:none}

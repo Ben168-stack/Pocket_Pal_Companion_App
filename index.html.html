@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loadout Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Styles: shared first, then one file per screen -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/today.css">
+<link rel="stylesheet" href="css/sheets.css">
+<link rel="stylesheet" href="css/plan.css">
+<link rel="stylesheet" href="css/week.css">
+<link rel="stylesheet" href="css/people.css">
+<link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+<div class="stage">
+  <div class="phone" id="phone" aria-live="polite"></div>
+  <aside class="demo" aria-label="Demo controls">
+    <h2>Demo controls</h2>
+    <p>These sit outside the phone so you can run the prototype during your presentation.</p>
+    <button data-act="nextDay">Skip to next day</button>
+    <button data-act="sampleWeek">Load Jane's sample week</button>
+    <button data-act="drain">Make today a heavy day</button>
+    <button data-act="restart">Start over</button>
+    <button data-act="gallery">Show all screens (for Figma)</button>
+  </aside>
+</div>
+<div id="gallery" hidden></div>
+
+<!-- Scripts: order matters (data and helpers first, app.js last) -->
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/logic.js"></script>
+<script src="js/mochi.js"></script>
+<script src="js/components.js"></script>
+<script src="js/screens/today.js"></script>
+<script src="js/screens/week.js"></script>
+<script src="js/screens/plan.js"></script>
+<script src="js/screens/people.js"></script>
+<script src="js/sheets/log.js"></script>
+<script src="js/sheets/share.js"></script>
+<script src="js/sheets/reset.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

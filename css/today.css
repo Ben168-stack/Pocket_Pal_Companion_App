@@ -1,0 +1,18 @@
+/* Today screen: header, Mochi hero, speech bubble, token beads, sleep check-in */
+/* today */
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 2px}
+.dayhead h1{font-size:30px}
+.dayhead .plan-chip{font-size:12px;font-weight:600;background:var(--card);padding:4px 10px;border-radius:99px;color:var(--ink-soft)}
+.hero{position:relative;text-align:center;margin-top:4px}
+.hero svg.mochi{width:210px;height:auto;display:block;margin:0 auto}
+.says{background:var(--card);border-radius:var(--r-md);padding:10px 14px;font-weight:500;display:inline-block;max-width:300px;position:relative;margin-bottom:6px}
+.says::after{content:"";position:absolute;bottom:-7px;left:50%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--card);border-bottom:0}
+.beads{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin:4px 0 2px}
+.bead{width:18px;height:18px;border-radius:50%;background:var(--token);box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.bead.empty{background:var(--token-empty);box-shadow:none}
+.bead.debt{background:transparent;border:2px dashed var(--alert)}
+.count{font-family:"Baloo 2";font-size:22px;font-weight:700}
+.count small{font-family:Figtree;font-size:13px;font-weight:500;color:var(--ink-soft)}
+.sleep{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.sleep button{background:var(--mist);border-radius:var(--r-sm);padding:10px 4px;font-weight:600;font-size:14px}
+.sleep button span{display:block;font-size:12px;font-weight:500;color:var(--ink-soft)}

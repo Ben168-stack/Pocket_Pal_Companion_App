@@ -1,0 +1,22 @@
+/* Colour/size variables, reset, fonts */
+:root{
+  --desk:#D7DEEC;
+  --mist:#EEF1F8;
+  --card:#FFFFFF;
+  --ink:#1F2A44;
+  --ink-soft:#5B6680;
+  --line:#DCE1EC;
+  --token:#F2B33D;
+  --token-empty:#D9DEEA;
+  --share:#2A9D8F;
+  --defer:#7B6CF6;
+  --reset:#4FA86E;
+  --alert:#D9596A;
+  --blush:#F6A5B8;
+  --r-lg:28px; --r-md:18px; --r-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--desk);font-family:Figtree,system-ui,sans-serif;color:var(--ink);font-size:15px;line-height:1.45;min-height:100vh}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--defer);outline-offset:2px}
+h1,h2,h3,.display{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.1}

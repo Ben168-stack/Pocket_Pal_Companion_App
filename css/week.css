@@ -1,0 +1,19 @@
+/* Week screen: bar chart, stats, growth card, if-then presets */
+/* week */
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:130px;margin:6px 0 4px}
+.bar{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:2px}
+.bar .fill{width:100%;border-radius:6px 6px 3px 3px;background:var(--token)}
+.bar .fill.over{background:var(--alert)}
+.bar .fill.none{background:var(--token-empty);height:4px}
+.bar .rec{width:100%;border-radius:3px;background:var(--reset)}
+.barlabels{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;font-weight:600;color:var(--ink-soft)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink-soft);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stat{background:var(--card);border-radius:var(--r-md);padding:12px;text-align:center}
+.stat b{font-family:"Baloo 2";font-size:26px;display:block;line-height:1}
+.stat span{font-size:12px;color:var(--ink-soft)}
+.growth{display:flex;align-items:center;gap:12px}
+.growth svg{width:84px;flex:none}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.presets button{background:var(--card);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:600;border:1px solid var(--line)}
