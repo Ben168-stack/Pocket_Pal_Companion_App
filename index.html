@@ -6,7 +6,7 @@
 <title>Loadout Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 
 <!-- Styles: shared first, then one file per screen -->
 <link rel="stylesheet" href="css/base.css">
@@ -23,18 +23,21 @@
 <div class="stage">
   <div class="phone" id="phone" aria-live="polite"></div>
   <aside class="demo" aria-label="Demo controls">
-    <h2>Demo controls</h2>
-    <p>These sit outside the phone so you can run the prototype during your presentation.</p>
-    <button data-act="nextDay">Skip to next day</button>
-    <button data-act="sampleWeek">Load Jane's sample week</button>
-    <button data-act="drain">Make today a heavy day</button>
-    <button data-act="restart">Start over</button>
-    <button data-act="gallery">Show all screens (for Figma)</button>
+    <!-- data-i18n holds the English text; js/i18n.js swaps it for the translation -->
+    <h2 data-i18n="Demo controls">Demo controls</h2>
+    <p data-i18n="These sit outside the phone so you can run the prototype during your presentation.">These sit outside the phone so you can run the prototype during your presentation.</p>
+    <button data-act="nextDay" data-i18n="Skip to next day">Skip to next day</button>
+    <button data-act="sampleWeek" data-i18n="Load Jane's sample week">Load Jane's sample week</button>
+    <button data-act="drain" data-i18n="Make today a heavy day">Make today a heavy day</button>
+    <button data-act="restart" data-i18n="Start over">Start over</button>
+    <button data-act="gallery" data-i18n="Show all screens (for Figma)">Show all screens (for Figma)</button>
   </aside>
 </div>
 <div id="gallery" hidden></div>
 
-<!-- Scripts: order matters (data and helpers first, app.js last) -->
+<!-- Scripts: order matters (translations first, data and helpers next, app.js last) -->
+<script src="js/lang/zh.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/data.js"></script>
 <script src="js/state.js"></script>
 <script src="js/logic.js"></script>

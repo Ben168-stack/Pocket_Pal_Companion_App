@@ -27,7 +27,7 @@ function mochi(state,{growth=0,scarf=false}={}){
   if(growth>=2)sprout+=`<path d="M100 ${top-12} q16 -12 24 0 q-12 10 -24 0z" fill="#5DB37E"/>`;
   if(growth>=3)sprout+=`<circle cx="100" cy="${top-20}" r="7" fill="#F6A5B8"/><circle cx="100" cy="${top-20}" r="3" fill="#F2B33D"/>`;
   const sc=scarf?`<path d="M38 ${cy+30} q62 26 124 0 v12 q-62 26 -124 0z" fill="#2A9D8F"/><rect x="128" y="${cy+40}" width="14" height="24" rx="4" fill="#2A9D8F" transform="rotate(-8 135 ${cy+52})"/>`:"";
-  return `<svg class="mochi" viewBox="0 0 200 190" role="img" aria-label="Mochi looks ${state==="bright"?"energetic":state}">
+  return `<svg class="mochi" viewBox="0 0 200 190" role="img" aria-label="${tr("Mochi looks "+(state==="bright"?"energetic":state))}">
     <ellipse cx="100" cy="178" rx="70" ry="8" fill="#1F2A44" opacity=".08"/>
     ${sprout}
     <ellipse cx="100" cy="${cy}" rx="82" ry="${ry}" fill="${tint}" stroke="#1F2A44" stroke-width="3"/>

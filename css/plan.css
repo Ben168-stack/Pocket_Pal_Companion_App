@@ -9,4 +9,4 @@
 .pending{font-size:12px;font-weight:700;color:var(--defer)}
 .range{display:flex;align-items:center;gap:12px;margin-top:10px}
 .range input{flex:1;accent-color:var(--ink)}
-.range output{font-family:"Baloo 2";font-weight:700;font-size:20px;width:28px;text-align:right}
+.range output{font-family:"Baloo 2","Noto Sans SC",sans-serif;font-weight:700;font-size:20px;width:28px;text-align:right}

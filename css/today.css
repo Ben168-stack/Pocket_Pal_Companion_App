@@ -11,8 +11,8 @@
 .bead{width:18px;height:18px;border-radius:50%;background:var(--token);box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
 .bead.empty{background:var(--token-empty);box-shadow:none}
 .bead.debt{background:transparent;border:2px dashed var(--alert)}
-.count{font-family:"Baloo 2";font-size:22px;font-weight:700}
-.count small{font-family:Figtree;font-size:13px;font-weight:500;color:var(--ink-soft)}
+.count{font-family:"Baloo 2","Noto Sans SC",sans-serif;font-size:22px;font-weight:700}
+.count small{font-family:Figtree,"Noto Sans SC",sans-serif;font-size:13px;font-weight:500;color:var(--ink-soft)}
 .sleep{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 .sleep button{background:var(--mist);border-radius:var(--r-sm);padding:10px 4px;font-weight:600;font-size:14px}
 .sleep button span{display:block;font-size:12px;font-weight:500;color:var(--ink-soft)}

@@ -35,5 +35,5 @@ function startWeek(){
   S.startTokens=S.plan==="custom"?S.customStart:PLANS[S.plan].start;
   S.week++;S.day=0;S.days=[];S.tokens=S.startTokens;S.slept=null;S.recovered=0;S.log=[];S.view="today";S.sheet=null;
   if(S.plan==="crunch"){S.pendingPlan="steady"}
-  toast("New week. Mochi is ready.");
+  toast(tr("New week. Mochi is ready."));
 }

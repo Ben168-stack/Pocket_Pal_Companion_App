@@ -11,8 +11,8 @@ function sampleWeek(){
   ];
   S.day=6;S.slept="good";S.tokens=11;S.recovered=1;
   S.log=[{name:"Meal or chat with a friend",kind:"reset",delta:1},{name:"Slept 7h or more",kind:"sleep",delta:2}];
-  S.view="week";S.ifThen="If I have two deadlines, I'll share the admin";
-  toast("Sample week loaded");
+  S.view="week";S.ifThen=tr("If I have two deadlines, I'll share the admin");
+  toast(tr("Sample week loaded"));
 }
 
 /* ---------- gallery for Figma ---------- */
@@ -32,8 +32,8 @@ function showGallery(){
     ["11 People",()=>{S=fresh();S.view="people"}]
   ];
   const g=document.getElementById("gallery");
-  g.innerHTML=`<div style="width:100%;text-align:center"><button class="btn primary" style="display:inline-flex" data-act="exitGallery">Back to prototype</button></div>`+
-    frames.map(([label,setup])=>{setup();S.toast=null;return `<div class="frame"><div class="frame-label">${label}</div><div class="phone">${phoneHTML()}</div></div>`}).join("");
+  g.innerHTML=`<div style="width:100%;text-align:center"><button class="btn primary" style="display:inline-flex" data-act="exitGallery">${tr("Back to prototype")}</button></div>`+
+    frames.map(([label,setup])=>{setup();S.toast=null;return `<div class="frame"><div class="frame-label">${tr(label)}</div><div class="phone">${phoneHTML()}</div></div>`}).join("");
   S=keep;S.toast=null;
   document.body.classList.add("gallery");g.hidden=false;window.scrollTo(0,0);
 }

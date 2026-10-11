@@ -8,7 +8,7 @@ const icons={
 };
 function tabbar(v){
   const t=[["today","Today"],["week","Week"],["plan","Plan"],["people","People"]];
-  return `<nav class="tabbar">${t.map(([k,l])=>`<button class="tab" data-act="view" data-v="${k}" ${v===k?'aria-current="page"':""}>${icons[k]}${l}<span class="dot"></span></button>`).join("")}</nav>`;
+  return `<nav class="tabbar">${t.map(([k,l])=>`<button class="tab" data-act="view" data-v="${k}" ${v===k?'aria-current="page"':""}>${icons[k]}${tr(l)}<span class="dot"></span></button>`).join("")}</nav>`;
 }
 function beads(st=S){
   const total=Math.max(st.startTokens,st.tokens);
@@ -18,5 +18,7 @@ function beads(st=S){
   return h;
 }
 function sheet(title,body){
-  return `<div class="scrim" data-act="closeScrim"><div class="sheet" role="dialog" aria-label="${title}"><div class="grab"></div><div class="sheet-head"><h2>${title}</h2><button class="close" data-act="close" aria-label="Close">×</button></div>${body}</div></div>`;
+  return `<div class="scrim" data-act="closeScrim"><div class="sheet" role="dialog" aria-label="${title}"><div class="grab"></div><div class="sheet-head"><h2>${title}</h2><button class="close" data-act="close" aria-label="${tr("Close")}">×</button></div>${body}</div></div>`;
 }
+// Name shown for a Today log entry, e.g. "Unfamiliar admin with Hall friend"
+function logName(l){return l.with?tr("{task} with {person}",{task:tr(l.name),person:tr(l.with)}):tr(l.name)}

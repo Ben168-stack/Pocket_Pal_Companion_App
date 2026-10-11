@@ -11,7 +11,7 @@
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
 .stat{background:var(--card);border-radius:var(--r-md);padding:12px;text-align:center}
-.stat b{font-family:"Baloo 2";font-size:26px;display:block;line-height:1}
+.stat b{font-family:"Baloo 2","Noto Sans SC",sans-serif;font-size:26px;display:block;line-height:1}
 .stat span{font-size:12px;color:var(--ink-soft)}
 .growth{display:flex;align-items:center;gap:12px}
 .growth svg{width:84px;flex:none}
