@@ -7,6 +7,6 @@ function fresh(){
     people:[{name:"Hall friend",role:"Lives two floors down"},{name:"Course mate",role:"Same EEE lab group"},{name:"Senior",role:"Year 2, been through it"},{name:"Student support",role:"NTU counselling and wellbeing"}],
     view:"today",sheet:null,draft:null,shareFor:null,ifThen:"",toast:null};
 }
-function load(){try{const v=localStorage.getItem("loadout");if(v)return Object.assign(fresh(),JSON.parse(v))}catch(e){}return fresh()}
+function load(){try{const v=localStorage.getItem("loadout");if(v){const s=Object.assign(fresh(),JSON.parse(v));s.tokens=Math.max(0,s.tokens);return s}}catch(e){}return fresh()}
 function save(){try{localStorage.setItem("loadout",JSON.stringify({...S,toast:null}))}catch(e){}}
 S=load();

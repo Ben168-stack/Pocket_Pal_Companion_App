@@ -13,13 +13,17 @@ function sharesThisWeek(){return S.days.reduce((a,d)=>a+d.shared,0)+S.log.filter
 function goodNights(){return S.days.filter(d=>d.slept==="good").length+(S.slept==="good"?1:0)}
 function resetsToday(){return S.log.filter(l=>l.kind==="reset").length}
 
+// Tokens can't go below 0. Returns false (and changes nothing) if you can't afford it.
 function spend(name,kind,delta,extra={}){
+  if(S.tokens+delta<0)return false;
   S.tokens+=delta;
   S.log.unshift({name,kind,delta,...extra});
+  return true;
 }
+// "over" means the day ran out of tokens (hit 0)
 function closeDay(){
   const spent=S.log.filter(l=>l.delta<0).reduce((a,l)=>a-l.delta,0);
-  S.days.push({spent,recovered:S.recovered,shared:S.log.filter(l=>l.kind==="share").length,over:S.tokens<0,slept:S.slept,resets:resetsToday()});
+  S.days.push({spent,recovered:S.recovered,shared:S.log.filter(l=>l.kind==="share").length,over:S.tokens<=0,slept:S.slept,resets:resetsToday()});
 }
 function nextDay(){
   closeDay();

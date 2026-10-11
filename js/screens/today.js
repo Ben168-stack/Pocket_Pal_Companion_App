@@ -7,9 +7,9 @@ function screenToday(){
     cards+=`<div class="card"><h3>${tr("How did you sleep?")}</h3><p>${tr("This sets how many tokens you start with today.")}</p>
       <div class="sleep"><button data-act="sleep" data-q="poor">${tr("Under 6h")}<span>${tr("−2 tokens")}</span></button><button data-act="sleep" data-q="ok">${tr("6 to 7h")}<span>${tr("no change")}</span></button><button data-act="sleep" data-q="good">${tr("7h or more")}<span>${tr("+2 tokens")}</span></button></div></div>`;
   }
-  if(S.tokens<0){
+  if(S.tokens===0){
     const shares=sharesThisWeek(),nights=goodNights();
-    cards+=`<div class="card alert"><h3>${tr("Over budget by {n}",{n:-S.tokens})}</h3><p>${tr("One tough day doesn't undo the week. So far you've shared {shares} and had {nights} of sleep. Tomorrow starts fresh.",{shares:tr(shares===1?"{n} task":"{n} tasks",{n:shares}),nights:tr(nights===1?"{n} good night":"{n} good nights",{n:nights})})}</p></div>`;
+    cards+=`<div class="card alert"><h3>${tr("Out of tokens")}</h3><p>${tr("One tough day doesn't undo the week. So far you've shared {shares} and had {nights} of sleep. Tomorrow starts fresh.",{shares:tr(shares===1?"{n} task":"{n} tasks",{n:shares}),nights:tr(nights===1?"{n} good night":"{n} good nights",{n:nights})})}</p></div>`;
   }else if(S.tokens>0&&S.tokens<=3){
     cards+=`<div class="card nudge"><h3>${tr("Running low")}</h3><p>${tr("A 20-minute walk before the next task would give a token back.")}</p></div>`;
   }

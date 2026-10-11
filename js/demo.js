@@ -22,7 +22,7 @@ function showGallery(){
     ["1 Today, morning",()=>{S=fresh()}],
     ["2 Today, energetic",()=>{S=fresh();S.slept="good";S.tokens=11;S.startTokens=10;S.log=[{name:"Routine errand",kind:"self",delta:-1},{name:"Slept 7h or more",kind:"sleep",delta:2}]}],
     ["3 Today, tired",()=>{S=fresh();S.slept="ok";S.tokens=3;S.sharesTotal=1;S.log=[{name:"Academic deadline",kind:"self",delta:-3},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Routine errand",kind:"self",delta:-1}]}],
-    ["4 Today, over budget",()=>{S=fresh();S.slept="poor";S.tokens=-2;S.days=[{spent:6,recovered:2,shared:1,over:false,slept:"good",resets:1}];S.day=1;S.log=[{name:"First lab report",kind:"self",delta:-4},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Academic deadline",kind:"self",delta:-3},{name:"Slept under 6h",kind:"sleep",delta:-2}]}],
+    ["4 Today, out of tokens",()=>{S=fresh();S.slept="poor";S.tokens=0;S.days=[{spent:6,recovered:2,shared:1,over:false,slept:"good",resets:1}];S.day=1;S.log=[{name:"First lab report",kind:"self",delta:-4},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Routine errand",kind:"self",delta:-1},{name:"Slept under 6h",kind:"sleep",delta:-2}]}],
     ["5 Log a task",()=>{S=fresh();S.slept="ok";S.seen={admin:1};S.sheet="log"}],
     ["6 Rate a task",()=>{S=fresh();S.slept="ok";S.sheet="log";S.draft={...TASKS[2]}}],
     ["7 Share it",()=>{S=fresh();S.slept="ok";S.sheet="share";S.shareFor={...TASKS[0],fullCost:3};S.shareTo=0}],

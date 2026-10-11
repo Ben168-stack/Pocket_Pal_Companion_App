@@ -20,7 +20,7 @@ document.addEventListener("click",e=>{
     case"view":S.view=b.dataset.v;S.sheet=null;break;
     case"sheet":S.sheet=b.dataset.s;S.draft=null;break;
     case"close":case"closeScrim":S.sheet=null;S.draft=null;break;
-    case"sleep":{const q=b.dataset.q,d={poor:-2,ok:0,good:2}[q];S.slept=q;S.tokens+=d;spend(q==="good"?"Slept 7h or more":q==="poor"?"Slept under 6h":"Slept 6 to 7h","sleep",0);S.log[0].delta=d;break}
+    case"sleep":{const q=b.dataset.q,d=Math.max({poor:-2,ok:0,good:2}[q],-S.tokens);S.slept=q;S.tokens+=d;spend(q==="good"?"Slept 7h or more":q==="poor"?"Slept under 6h":"Slept 6 to 7h","sleep",0);S.log[0].delta=d;break}
     case"pickTask":{const id=b.dataset.id;S.draft=id==="custom"?{custom:true,id:"c"+Date.now(),name:"",time:0,unfamiliar:0,strain:0}:{...TASKS.find(t=>t.id===id)};break}
     case"draftBack":S.draft=null;break;
     case"tog":{const k=b.dataset.k;S.draft[k]=S.draft[k]?0:1;break}
@@ -28,13 +28,14 @@ document.addEventListener("click",e=>{
       const d=S.draft;const name=(d.custom?(d.name||"Custom task"):d.name);
       const c=d.custom?{cost:1+d.time+d.unfamiliar+d.strain}:taskCost(d);
       const how=b.dataset.how;
-      if(how==="self"){spend(name,"self",-c.cost);S.seen[d.id]=(S.seen[d.id]||0)+1;S.sheet=null;toast(tr("−{n} tokens",{n:c.cost}))}
+      if(how==="self"){if(!spend(name,"self",-c.cost))break;S.seen[d.id]=(S.seen[d.id]||0)+1;S.sheet=null;toast(tr("−{n} tokens",{n:c.cost}))}
       if(how==="defer"){S.later.push({...d,name});spend(name,"defer",0);S.sheet=null;toast(tr("Moved to Deferred"))}
-      if(how==="share"){S.shareFor={...d,name,fullCost:c.cost};S.shareTo=null;S.sheet="share"}
+      if(how==="share"){if(S.tokens<1)break;S.shareFor={...d,name,fullCost:c.cost};S.shareTo=null;S.sheet="share"}
       S.draft=null;break}
     case"sharePick":S.shareTo=+b.dataset.i;break;
     case"shareSend":{
       const t=S.shareFor;const p=S.people[S.shareTo];
+      if(S.tokens<1)break;
       const msg=shareMessage(t,false);
       try{navigator.clipboard&&navigator.clipboard.writeText(msg).catch(()=>{})}catch(err){}
       spend(t.name,"share",-1,{with:p.name});S.seen[t.id]=(S.seen[t.id]||0)+1;S.sharesTotal++;S.sheet=null;S.shareFor=null;toast(tr("Message copied. Shared for 1 token"));break}
@@ -49,7 +50,7 @@ document.addEventListener("click",e=>{
     case"addPerson":{const i=phone.querySelector('[data-act="newPerson"]');if(i&&i.value.trim()){S.people.push({name:i.value.trim(),role:"Added by you"});toast(tr("Added"))}break}
     case"nextDay":if(S.day===6){S.view="week";toast(tr("It's Sunday. Review the week."))}else{nextDay();toast(tr("Good morning. It's {day}.",{day:tr(DAYS[S.day])}))}break;
     case"sampleWeek":sampleWeek();break;
-    case"drain":if(S.slept===null){S.slept="poor";S.log.unshift({name:"Slept under 6h",kind:"sleep",delta:-2});S.tokens-=2}spend("First lab report","self",-4);spend("Unfamiliar admin","self",-3);spend("Academic deadline","self",-3);toast(tr("Heavy day loaded"));break;
+    case"drain":if(S.slept===null){const d=-Math.min(2,S.tokens);S.slept="poor";S.log.unshift({name:"Slept under 6h",kind:"sleep",delta:d});S.tokens+=d}spend("First lab report","self",-4);spend("Unfamiliar admin","self",-3);spend("Academic deadline","self",-3);toast(tr("Heavy day loaded"));break;
     case"restart":S=fresh();break;
     case"gallery":showGallery();return;
     default:return;

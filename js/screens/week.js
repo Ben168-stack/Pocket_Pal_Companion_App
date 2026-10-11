@@ -1,7 +1,7 @@
 /* Week review screen */
 function screenWeek(){
   const days=[...S.days];
-  const today={spent:S.log.filter(l=>l.delta<0).reduce((a,l)=>a-l.delta,0),recovered:S.recovered,over:S.tokens<0,shared:S.log.filter(l=>l.kind==="share").length};
+  const today={spent:S.log.filter(l=>l.delta<0).reduce((a,l)=>a-l.delta,0),recovered:S.recovered,over:S.tokens<=0,shared:S.log.filter(l=>l.kind==="share").length};
   const all=DAYS.map((_,i)=>i<days.length?days[i]:i===S.day?today:null);
   const max=Math.max(14,...all.filter(Boolean).map(d=>d.spent));
   const bars=all.map(d=>{
@@ -19,8 +19,8 @@ function screenWeek(){
     <div class="dayhead"><h1>${tr("Week {n}",{n:S.week})}</h1><span class="plan-chip">${tr(sunday?"Sunday review":"So far")}</span></div>
     <div class="card"><h3>${tr("Tokens spent each day")}</h3><div class="bars">${bars}</div>
       <div class="barlabels">${DAYS.map(d=>`<span>${shortDay(d)}</span>`).join("")}</div>
-      <div class="legend"><span><i style="background:var(--token)"></i>${tr("Spent")}</span><span><i style="background:var(--reset)"></i>${tr("Recovered")}</span><span><i style="background:var(--alert)"></i>${tr("Over budget")}</span></div></div>
-    <div class="stats"><div class="stat"><b>${shared}</b><span>${tr("Shared")}</span></div><div class="stat"><b>${resets}</b><span>${tr("Resets")}</span></div><div class="stat"><b>${overs}</b><span>${tr("Over budget")}</span></div></div>
+      <div class="legend"><span><i style="background:var(--token)"></i>${tr("Spent")}</span><span><i style="background:var(--reset)"></i>${tr("Recovered")}</span><span><i style="background:var(--alert)"></i>${tr("Ran out")}</span></div></div>
+    <div class="stats"><div class="stat"><b>${shared}</b><span>${tr("Shared")}</span></div><div class="stat"><b>${resets}</b><span>${tr("Resets")}</span></div><div class="stat"><b>${overs}</b><span>${tr("Ran out")}</span></div></div>
     <div class="card growth">${mochi("bright",{growth:S.growth+(balanced?1:0),scarf:S.sharesTotal>0})}<div><h3>${tr(balanced?"Mochi will grow this week":"Mochi stays the same size")}</h3><p>${tr(balanced?"You stayed in budget or asked for help. Both count.":"Share one task or stay in budget to help Mochi grow.")}</p></div></div>
     <div class="section-title">${tr("Plan for next week")}</div>
     <div class="card"><p>${tr("Write one if-then plan for a week that might get busy.")}</p>

@@ -57,7 +57,7 @@ const ZH={
   "Under 6h":"少于 6 小时","−2 tokens":"−2 个能量币",
   "6 to 7h":"6 到 7 小时","no change":"不变",
   "7h or more":"7 小时以上","+2 tokens":"+2 个能量币",
-  "Over budget by {n}":"超支 {n} 个",
+  "Out of tokens":"能量币用完了",
   "One tough day doesn't undo the week. So far you've shared {shares} and had {nights} of sleep. Tomorrow starts fresh.":"辛苦的一天不会抹掉整周的努力。到目前为止，你已找人帮忙 {shares}，并有 {nights}睡得很好。明天重新开始。",
   "{n} task":"{n} 次","{n} tasks":"{n} 次",
   "{n} good night":"{n} 个晚上","{n} good nights":"{n} 个晚上",
@@ -84,6 +84,8 @@ const ZH={
   "Share it":"找人帮忙","−1 token":"−1 个能量币",
   "Defer it":"推迟","0 today":"今天不消耗",
   "Pick a different task":"换一个任务",
+  "Not enough tokens: this costs {cost} and you have {left}. Share it, defer it, or Reset first.":"能量币不够：这件事需要 {cost} 个，你只剩 {left} 个。可以找人帮忙、推迟，或先恢复一下。",
+  "You need 1 token to share. Do a Reset first.":"找人帮忙需要 1 个能量币，先恢复一下吧。",
 
   /* ---------- Share it sheet ---------- */
   "this task":"这件事",
@@ -98,7 +100,7 @@ const ZH={
   /* ---------- Week screen ---------- */
   "Week {n}":"第 {n} 周","Sunday review":"周日回顾","So far":"目前为止",
   "Tokens spent each day":"每天消耗的能量币",
-  "Spent":"消耗","Recovered":"恢复","Over budget":"超支","Resets":"恢复次数",
+  "Spent":"消耗","Recovered":"恢复","Ran out":"用完","Resets":"恢复次数",
   "Mochi will grow this week":"Mochi 本周会长大","Mochi stays the same size":"Mochi 本周没有长大",
   "You stayed in budget or asked for help. Both count.":"你没有超支，或者向别人求助了。两样都算数。",
   "Share one task or stay in budget to help Mochi grow.":"找人帮忙一次，或者不超支，就能让 Mochi 长大。",
@@ -150,7 +152,7 @@ const ZH={
   "Start over":"重新开始",
   "Show all screens (for Figma)":"显示所有页面（用于 Figma）",
   "Back to prototype":"返回原型",
-  "1 Today, morning":"1 今天·早上","2 Today, energetic":"2 今天·精力充沛","3 Today, tired":"3 今天·疲惫","4 Today, over budget":"4 今天·超支",
+  "1 Today, morning":"1 今天·早上","2 Today, energetic":"2 今天·精力充沛","3 Today, tired":"3 今天·疲惫","4 Today, out of tokens":"4 今天·能量币用完",
   "5 Log a task":"5 记录任务","6 Rate a task":"6 评估任务","7 Share it":"7 找人帮忙","8 Reset":"8 恢复",
   "9 Week review":"9 本周回顾","10 Plan":"10 计划","11 People":"11 联系人"
 };
