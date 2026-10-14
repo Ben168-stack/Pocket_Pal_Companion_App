@@ -4,7 +4,7 @@
 .dayhead h1{font-size:30px}
 .dayhead .plan-chip{font-size:12px;font-weight:600;background:var(--card);padding:4px 10px;border-radius:99px;color:var(--ink-soft)}
 .hero{position:relative;text-align:center;margin-top:4px}
-.hero svg.mochi{width:210px;height:auto;display:block;margin:0 auto}
+.hero svg.mochi{width:205px;height:auto;display:block;margin:0 auto}
 .says{background:var(--card);border-radius:var(--r-md);padding:10px 14px;font-weight:500;display:inline-block;max-width:300px;position:relative;margin-bottom:6px}
 .says::after{content:"";position:absolute;bottom:-7px;left:50%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--card);border-bottom:0}
 .beads{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin:4px 0 2px}

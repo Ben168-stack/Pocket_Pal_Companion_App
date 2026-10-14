@@ -14,10 +14,15 @@ const TASKS=[
   {id:"social",name:"Difficult conversation",ex:"Group conflict, awkward talk",time:0,unfamiliar:0,strain:1},
   {id:"errand",name:"Routine errand",ex:"Laundry, groceries",time:0,unfamiliar:0,strain:0}
 ];
+// hall:1 events are First Six Weeks hall sessions (logged as kind "hall"); day is 0=Mon..6=Sun
 const RESETS=[
+  {id:"tennis",name:"Hall tennis",ex:"Meet other residents, all levels welcome",gain:2,hall:1,when:"Thu 8pm",day:3},
+  {id:"dance",name:"Dance session",ex:"Beginners welcome, come with a friend or alone",gain:2,hall:1,when:"Sat 10am",day:5},
   {id:"move",name:"Walk, swim or gym",ex:"20 minutes counts",gain:1},
   {id:"friend",name:"Meal or chat with a friend",ex:"In person or a call home",gain:1},
   {id:"hobby",name:"Something you enjoy",ex:"15 minutes, no studying",gain:1},
   {id:"off",name:"Proper break",ex:"Half a day with nothing logged",gain:3}
 ];
 const DAILY_CAP=4;
+// First Six Weeks admin clinic, suggested for any task that is new to you
+const CLINIC={when:"Tue & Thu, 2–5pm",where:"Hall office"};

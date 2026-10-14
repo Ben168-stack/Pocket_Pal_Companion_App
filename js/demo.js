@@ -3,9 +3,9 @@ function sampleWeek(){
   S=fresh();S.growth=1;S.sharesTotal=2;S.seen={admin:1};
   S.days=[
     {spent:7,recovered:2,shared:0,over:false,slept:"good",resets:1},
-    {spent:12,recovered:1,shared:0,over:true,slept:"poor",resets:1},
-    {spent:6,recovered:3,shared:1,over:false,slept:"ok",resets:2},
-    {spent:8,recovered:2,shared:1,over:false,slept:"good",resets:1},
+    {spent:12,recovered:1,shared:0,over:true,slept:"poor",resets:1,clinic:1},
+    {spent:6,recovered:3,shared:1,over:false,slept:"ok",resets:2,buddy:1},
+    {spent:8,recovered:2,shared:1,over:false,slept:"good",resets:1,hall:1},
     {spent:5,recovered:4,shared:0,over:false,slept:"good",resets:2},
     {spent:2,recovered:3,shared:0,over:false,slept:"good",resets:1}
   ];
@@ -23,13 +23,16 @@ function showGallery(){
     ["2 Today, energetic",()=>{S=fresh();S.slept="good";S.tokens=11;S.startTokens=10;S.log=[{name:"Routine errand",kind:"self",delta:-1},{name:"Slept 7h or more",kind:"sleep",delta:2}]}],
     ["3 Today, tired",()=>{S=fresh();S.slept="ok";S.tokens=3;S.sharesTotal=1;S.log=[{name:"Academic deadline",kind:"self",delta:-3},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Routine errand",kind:"self",delta:-1}]}],
     ["4 Today, out of tokens",()=>{S=fresh();S.slept="poor";S.tokens=0;S.days=[{spent:6,recovered:2,shared:1,over:false,slept:"good",resets:1}];S.day=1;S.log=[{name:"First lab report",kind:"self",delta:-4},{name:"Unfamiliar admin",kind:"self",delta:-3},{name:"Routine errand",kind:"self",delta:-1},{name:"Slept under 6h",kind:"sleep",delta:-2}]}],
-    ["5 Log a task",()=>{S=fresh();S.slept="ok";S.seen={admin:1};S.sheet="log"}],
-    ["6 Rate a task",()=>{S=fresh();S.slept="ok";S.sheet="log";S.draft={...TASKS[2]}}],
-    ["7 Share it",()=>{S=fresh();S.slept="ok";S.sheet="share";S.shareFor={...TASKS[0],fullCost:3};S.shareTo=0}],
-    ["8 Reset",()=>{S=fresh();S.slept="ok";S.tokens=4;S.sheet="reset"}],
-    ["9 Week review",()=>{sampleWeek();S.toast=null}],
-    ["10 Plan",()=>{S=fresh();S.pendingPlan="crunch";S.view="plan"}],
-    ["11 People",()=>{S=fresh();S.view="people"}]
+    ["5 Today, heavy week",()=>{S=fresh();S.slept="poor";S.tokens=0;S.days=[{spent:13,recovered:1,shared:0,over:true,slept:"poor",resets:1},{spent:12,recovered:0,shared:0,over:true,slept:"ok",resets:0}];S.day=2;S.log=[{name:"Academic deadline",kind:"self",delta:-3},{name:"First lab report",kind:"self",delta:-4},{name:"Slept under 6h",kind:"sleep",delta:-2}]}],
+    ["6 Log a task",()=>{S=fresh();S.slept="ok";S.seen={admin:1};S.sheet="log"}],
+    ["7 Rate a task",()=>{S=fresh();S.slept="ok";S.sheet="log";S.draft={...TASKS[2]}}],
+    ["8 Admin clinic",()=>{S=fresh();S.slept="ok";S.sheet="log";S.draft={...TASKS[0]}}],
+    ["9 Share it",()=>{S=fresh();S.slept="ok";S.sheet="share";S.shareFor={...TASKS[0],fullCost:3};S.shareTo=buddyIndex()}],
+    ["10 Reset",()=>{S=fresh();S.slept="ok";S.tokens=4;S.sheet="reset"}],
+    ["11 Student support",()=>{S=fresh();S.slept="ok";S.sheet="support"}],
+    ["12 Week review",()=>{sampleWeek();S.toast=null}],
+    ["13 Plan",()=>{S=fresh();S.pendingPlan="crunch";S.view="plan"}],
+    ["14 People",()=>{S=fresh();S.view="people"}]
   ];
   const g=document.getElementById("gallery");
   g.innerHTML=`<div style="width:100%;text-align:center"><button class="btn primary" style="display:inline-flex" data-act="exitGallery">${tr("Back to prototype")}</button></div>`+

@@ -1,8 +1,8 @@
 /* Renders the phone and handles every button/input (start here for behaviour changes) */
 function phoneHTML(){
   const views={today:screenToday,week:screenWeek,plan:screenPlan,people:screenPeople};
-  const sh={log:sheetLog,reset:sheetReset,share:sheetShare}[S.sheet];
-  return `<div class="statusbar"><span>9:41</span><span class="display" style="font-size:16px">Loadout</span><button class="lang" data-act="lang" aria-label="${tr("Switch language")}">${LANG==="en"?"中文":"EN"}</button></div>${views[S.view]()}${tabbar(S.view)}${sh?sh():""}${S.toast?`<div class="toast" role="status">${S.toast}</div>`:""}`;
+  const sh={log:sheetLog,reset:sheetReset,share:sheetShare,support:sheetSupport}[S.sheet];
+  return `<div class="statusbar"><span>9:41</span><span class="display" style="font-size:16px">Pocket Pal</span><button class="lang" data-act="lang" aria-label="${tr("Switch language")}">${LANG==="en"?"中文":"EN"}</button></div>${views[S.view]()}${tabbar(S.view)}${sh?sh():""}${S.toast?`<div class="toast" role="status">${S.toast}</div>`:""}`;
 }
 
 /* ---------- actions ---------- */
@@ -30,19 +30,23 @@ document.addEventListener("click",e=>{
       const how=b.dataset.how;
       if(how==="self"){if(!spend(name,"self",-c.cost))break;S.seen[d.id]=(S.seen[d.id]||0)+1;S.sheet=null;toast(tr("−{n} tokens",{n:c.cost}))}
       if(how==="defer"){S.later.push({...d,name});spend(name,"defer",0);S.sheet=null;toast(tr("Moved to Deferred"))}
-      if(how==="share"){if(S.tokens<1)break;S.shareFor={...d,name,fullCost:c.cost};S.shareTo=null;S.sheet="share"}
+      if(how==="share"){if(S.tokens<1)break;S.shareFor={...d,name,fullCost:c.cost};S.shareTo=buddyIndex();S.sheet="share"}
+      if(how==="clinic"){if(!spend(name,"clinic",-1))break;S.seen[d.id]=(S.seen[d.id]||0)+1;S.sheet=null;toast(tr("Clinic visit logged. −1 token"))}
       S.draft=null;break}
     case"sharePick":S.shareTo=+b.dataset.i;break;
+    case"shareCheckin":S.shareFor=null;S.shareTo=buddyIndex();S.sheet="share";break;
     case"shareSend":{
-      const t=S.shareFor;const p=S.people[S.shareTo];
+      const t=S.shareFor;const p=S.people[S.shareTo];if(!p)break;
       if(S.tokens<1)break;
       const msg=shareMessage(t,false);
       try{navigator.clipboard&&navigator.clipboard.writeText(msg).catch(()=>{})}catch(err){}
-      spend(t.name,"share",-1,{with:p.name});S.seen[t.id]=(S.seen[t.id]||0)+1;S.sharesTotal++;S.sheet=null;S.shareFor=null;toast(tr("Message copied. Shared for 1 token"));break}
+      spend(t?t.name:"Check-in","share",-1,{with:p.name,to:p.type});if(t)S.seen[t.id]=(S.seen[t.id]||0)+1;S.sharesTotal++;S.sheet=null;S.shareFor=null;toast(tr("Message copied. Shared for 1 token"));break}
     case"doReset":{
       const r=RESETS.find(x=>x.id===b.dataset.id);const bonus=S.plan==="free"?1:0;
       const g=Math.min(r.gain+bonus,DAILY_CAP-S.recovered);if(g<=0)break;
-      S.recovered+=g;spend(r.name,"reset",g);S.sheet=null;toast(tr("+{n}. Mochi feels better",{n:g}));break}
+      S.recovered+=g;spend(r.name,r.hall?"hall":"reset",g);S.sheet=null;toast(tr("+{n}. Mochi feels better",{n:g}));break}
+    case"supportCopy":try{navigator.clipboard&&navigator.clipboard.writeText(supportMessage()).catch(()=>{})}catch(err){}S.sheet=null;toast(tr("Message copied"));break;
+    case"dismissCalm":S.calmDismissed=S.week+"-"+S.day;break;
     case"undefer":{const t=S.later.splice(+b.dataset.i,1)[0];S.draft=t;S.sheet="log";break}
     case"plan":{const k=b.dataset.k;S.pendingPlan=k===S.plan&&k!=="custom"?null:k;if(k===S.plan&&k==="custom")S.pendingPlan=null;break}
     case"ifthen":S.ifThen=b.dataset.t;break;

@@ -13,11 +13,13 @@ function sheetLog(){
     body=`${d.custom?`<label class="hint" for="tname">${tr("Task name")}</label><input id="tname" type="text" data-act="tname" value="${d.name||""}" placeholder="${tr("e.g. Phone call with landlord")}">`:`<div class="card"><h3>${tr(t.name)}</h3><p>${tr(t.ex)}</p></div>`}
       <div class="factors">${tog("time","Takes over 2 hours","Or spreads over several days")}${tog("unfamiliar","New to me","First time, or an unfamiliar system")}${tog("strain","Stressful","Uncertainty, pressure or conflict")}</div>
       ${c.familiar?`<p class="familiar">${tr("You have done this before, so it costs 1 less.")}</p>`:""}
+      ${d.unfamiliar?`<div class="card clinic-hint"><h3>${tr("Admin clinic: {when}, {where}",{when:tr(CLINIC.when),where:tr(CLINIC.where)})}</h3><p>${tr("Staff and seniors help with bank, visa and medical registration.")}</p></div>`:""}
       ${c.cost>S.tokens?`<div class="card alert"><p>${tr("Not enough tokens: this costs {cost} and you have {left}. Share it, defer it, or Reset first.",{cost:c.cost,left:S.tokens})}</p></div>`:""}
       <div class="choice">
         <button class="btn primary" data-act="doTask" data-how="self" ${c.cost>S.tokens?"disabled":""}>${tr("Do it myself")}<small>${tr("−{n} tokens",{n:c.cost})}</small></button>
         <button class="btn share" data-act="doTask" data-how="share" ${S.tokens<1?"disabled":""}>${tr("Share it")}<small>${tr("−1 token")}</small></button>
         <button class="btn defer" data-act="doTask" data-how="defer">${tr("Defer it")}<small>${tr("0 today")}</small></button>
+        ${d.unfamiliar?`<button class="btn clinic" data-act="doTask" data-how="clinic" ${S.tokens<1?"disabled":""}>${tr("Go to the clinic")}<small>${tr("−1 token")}</small></button>`:""}
       </div>
       <button class="btn ghost" style="width:100%;margin-top:8px" data-act="draftBack">${tr("Pick a different task")}</button>`;
   }

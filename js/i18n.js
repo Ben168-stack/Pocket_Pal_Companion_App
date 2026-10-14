@@ -1,7 +1,7 @@
 /* Language switching. tr("English text") returns the text in the current language.
    Translations live in js/lang/zh.js. Anything not found there is shown in English. */
 const LANGS={zh:typeof ZH!=="undefined"?ZH:{}};
-let LANG=(()=>{try{return localStorage.getItem("loadout-lang")||"en"}catch(e){return"en"}})();
+let LANG=(()=>{try{return localStorage.getItem("pocketpal-lang")||localStorage.getItem("loadout-lang")||"en"}catch(e){return"en"}})();
 const missing=new Set();
 
 function tr(key,vars){
@@ -11,6 +11,8 @@ function tr(key,vars){
     if(hit!=null)s=hit;
     else if(!missing.has(key)){missing.add(key);console.warn(`[${LANG}] missing translation:`,key)}
   }
+  // texts say "Mochi"; show the chosen mascot's name instead (set in js/mochi.js)
+  if(typeof mascotName==="function")s=s.split("Mochi").join(mascotName());
   if(vars)s=s.replace(/\{(\w+)\}/g,(m,k)=>k in vars?vars[k]:m);
   return s;
 }
@@ -19,7 +21,7 @@ function shortDay(day){return LANG==="zh"?tr(day).slice(-1):day[0]}
 
 function setLang(l){
   LANG=l;
-  try{localStorage.setItem("loadout-lang",l)}catch(e){}
+  try{localStorage.setItem("pocketpal-lang",l)}catch(e){}
   applyStaticLang();
 }
 // Translates fixed HTML outside the phone (elements with data-i18n="English text")

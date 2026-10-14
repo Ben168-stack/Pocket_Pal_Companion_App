@@ -11,6 +11,11 @@
 .pick{display:flex;justify-content:space-between;align-items:center;width:100%;background:var(--card);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;text-align:left;border:2px solid transparent}
 .pick[aria-pressed="true"]{border-color:var(--ink)}
 .pick .sub{display:block;font-size:12px;color:var(--ink-soft);font-weight:500}
+.pick.rec{border-left:5px solid var(--share)}
+.pick.rec[aria-pressed="true"]{border-color:var(--ink);border-left-color:var(--share)}
+.pick .when{display:inline-block;font-size:12px;font-weight:700;color:var(--reset);background:var(--mist);border-radius:99px;padding:1px 8px;margin-right:6px}
+.card.clinic-hint{border-left:5px solid var(--clinic)}
+.card.clinic-hint h3{font-size:16px}
 .cost{font-family:"Baloo 2","Noto Sans SC",sans-serif;font-weight:700;font-size:18px;white-space:nowrap}
 .factors{display:flex;flex-direction:column;gap:8px;margin:8px 0 12px}
 .toggle{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:var(--r-sm);padding:10px 14px;text-align:left;font-size:14px}

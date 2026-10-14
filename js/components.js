@@ -22,3 +22,5 @@ function sheet(title,body){
 }
 // Name shown for a Today log entry, e.g. "Unfamiliar admin with Hall friend"
 function logName(l){return l.with?tr("{task} with {person}",{task:tr(l.name),person:tr(l.with)}):tr(l.name)}
+// "Your buddy: Wei Ming" for the assigned buddy, otherwise just the name
+function personName(p){return p.type==="buddy"?tr("Your buddy: {name}",{name:tr(p.name)}):tr(p.name)}

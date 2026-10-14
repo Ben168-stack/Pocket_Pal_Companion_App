@@ -9,10 +9,16 @@
 .barlabels{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;font-weight:600;color:var(--ink-soft)}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--ink-soft);margin-top:8px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
 .stat{background:var(--card);border-radius:var(--r-md);padding:12px;text-align:center}
 .stat b{font-family:"Baloo 2","Noto Sans SC",sans-serif;font-size:26px;display:block;line-height:1}
 .stat span{font-size:12px;color:var(--ink-soft)}
+.checks{list-style:none;display:grid;gap:10px}
+.checks li{display:flex;align-items:center;gap:12px;font-size:14px}
+.checks small{display:block;font-size:12px;color:var(--ink-soft)}
+.checks .tick{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:800;color:#fff;flex:none}
+.checks .done .tick{background:var(--reset);border-color:var(--reset)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .growth{display:flex;align-items:center;gap:12px}
 .growth svg{width:84px;flex:none}
 .presets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
